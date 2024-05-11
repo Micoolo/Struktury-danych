@@ -1,7 +1,7 @@
 #include <iostream>
 #include <chrono>
-#include "Queue_List.cpp"
-#include "Queue_Heap.cpp"
+#include "Queue_List.hpp"
+#include "Queue_Heap.hpp"
 
 void menu_queue_list()
 {
