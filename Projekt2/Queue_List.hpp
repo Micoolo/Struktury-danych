@@ -37,7 +37,7 @@ public:
 
 	~queueList();
 
-	void removeFirst();
+	void removeFirst(); //extract max
 
 	unsigned int size() const;
 	void showList();

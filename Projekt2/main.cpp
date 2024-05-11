@@ -1,7 +1,7 @@
 #include <iostream>
 #include <chrono>
-#include "Queue_List.hpp"
-
+#include "Queue_List.cpp"
+#include "Queue_Heap.cpp"
 
 void menu_queue_list()
 {
@@ -11,7 +11,7 @@ void menu_queue_list()
     {
         std::cout << std::endl << "-------QUEUE ON LIST-------" << std::endl;
         std::cout << "-------CHOOSE OPTION-------" << std::endl;
-        std::cout << "1) GENERATE ELEMENTS " << std::endl;
+        std::cout << "1) Generate elements " << std::endl;
         std::cout << "2) Insert element (e, p)" << std::endl;
         std::cout << "3) Extract-MAX " << std::endl;
         std::cout << "4) Peek / find MAX" << std::endl;
@@ -147,7 +147,7 @@ void menu_queue_list()
                     time_taken *= 1e-9;
                     avarage_time += time_taken;
                 }
-                std::cout << "Operacja zajela: " << avarage_time << " sekundy." << std::endl;
+                std::cout << "Operacja zajela: " << avarage_time / 10 << " sekundy." << std::endl;
                 break;
             }
             case 9:
@@ -158,9 +158,165 @@ void menu_queue_list()
 }
 
 
+
+void menu_queue_heap()
+{
+    queueHeap heap;
+    bool exit = false;
+    do 
+    {
+        std::cout << std::endl << "-------QUEUE ON HEAP-------" << std::endl;
+        std::cout << "-------CHOOSE OPTION-------" << std::endl;
+        std::cout << "1) Genrate elements " << std::endl;
+        std::cout << "2) Insert element (e, p)" << std::endl;
+        std::cout << "3) Extract-MAX " << std::endl;
+        std::cout << "4) Peek / find MAX" << std::endl;
+        std::cout << "5) Modify element (element picked randomly, new priority also set randomly)" << std::endl;
+        std::cout << "6) Return size" << std::endl;
+        std::cout << "7) Show queue" << std::endl;
+        std::cout << "8) Insert random number" << std::endl;
+        std::cout << "9) Exit" << std::endl;
+        int choice;
+        std::cin >> choice;
+        switch(choice)
+        {
+            case 1: 
+            {
+                std::cout << "How many numbers to generate" << std::endl;
+                int number;
+                std::cin >> number;
+                auto start = std::chrono::high_resolution_clock::now();
+
+                heap.randomQueue(number);
+
+                auto end = std::chrono::high_resolution_clock::now();
+                double time_taken = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
+                time_taken *= 1e-9;
+                std::cout << "Operacja zajela: " << time_taken << " sekundy." << std::endl;
+                break;
+            }
+            case 2: 
+            {
+                int element, priority;
+                std::cin >> element >> priority;
+                auto start = std::chrono::high_resolution_clock::now();
+
+                heap.insert(element, priority);
+
+                auto end = std::chrono::high_resolution_clock::now();
+                double time_taken = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
+                time_taken *= 1e-9;
+                std::cout << "Operacja zajela: " << time_taken << " sekundy." << std::endl; 
+                break;
+            }
+            case 3:
+            {   
+                double avarage_time = 0;
+                for(int i = 0; i < 10; i++)
+                {
+                    auto start = std::chrono::high_resolution_clock::now();
+                    
+                    heap.extractMax();
+                    
+                    auto end = std::chrono::high_resolution_clock::now();
+                    double time_taken = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
+                    time_taken *= 1e-9;
+                    avarage_time += time_taken;
+                }
+                std::cout << "Operacja zajela: " << avarage_time / 10 << " sekundy." << std::endl;
+                break;
+            }
+            case 4:
+            {
+                double avarage_time = 0;
+                for(int i = 0; i < 10; i++)
+                {
+                    auto start = std::chrono::high_resolution_clock::now();
+
+                    heap.peek();
+
+                    auto end = std::chrono::high_resolution_clock::now();
+                    double time_taken = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
+                    time_taken *= 1e-9;
+                    avarage_time += time_taken;
+                }
+                std::cout << "Operacja zajela: " << avarage_time / 10 << " sekundy." << std::endl;
+                break;
+            }
+            case 5:
+            {
+                double avarage_time = 0;
+                for(int i = 0; i < 10; i++)
+                {
+                    auto start = std::chrono::high_resolution_clock::now();
+
+                    heap.modify_key();
+
+                    auto end = std::chrono::high_resolution_clock::now();
+                    double time_taken = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
+                    time_taken *= 1e-9;
+                    avarage_time += time_taken;
+                }
+                std::cout << "Operacja zajela: " << avarage_time / 10 << " sekundy." << std::endl;
+                break;
+            }
+            case 6:
+            {
+                double avarage_time = 0;
+                for(int i = 0; i < 10; i++)
+                {
+                    auto start = std::chrono::high_resolution_clock::now();
+
+                    std::cout << "Size of queue: " << heap.getSize() << std::endl;
+
+                    auto end = std::chrono::high_resolution_clock::now();
+                    double time_taken = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
+                    time_taken *= 1e-9;
+                    avarage_time += time_taken;
+                }
+                std::cout << "Operacja zajela: " << avarage_time / 10 << " sekundy." << std::endl;
+                break;
+            }
+            case 7:
+            {
+                auto start = std::chrono::high_resolution_clock::now();
+
+                heap.show();
+
+                auto end = std::chrono::high_resolution_clock::now();
+                double time_taken = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
+                time_taken *= 1e-9;
+                std::cout << "Operacja zajela: " << time_taken << " sekundy." << std::endl;
+                break;
+            }
+            case 8:
+            {
+                double avarage_time = 0;
+                for(int i = 0; i < 10; i++)
+                {
+                    auto start = std::chrono::high_resolution_clock::now();
+
+                    heap.insertRandom();
+
+                    auto end = std::chrono::high_resolution_clock::now();
+                    double time_taken = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
+                    time_taken *= 1e-9;
+                    avarage_time += time_taken;
+                }
+                std::cout << "Operacja zajela: " << avarage_time / 10 << " sekundy." << std::endl;
+                break;
+            }
+            case 9:
+                exit = true;
+                break;
+        }
+    } while (exit == false);
+}
+
 int main()
 {
-    menu_queue_list();
+    // menu_queue_list();
+    menu_queue_heap();
 
     return 0;
 }
