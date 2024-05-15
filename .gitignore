@@ -1,3 +1,4 @@
 Projekt2/Build/
 Projekt2/CMakelists.txt
 *.json
+*.exe
