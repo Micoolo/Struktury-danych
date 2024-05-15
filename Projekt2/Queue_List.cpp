@@ -45,7 +45,7 @@ void listNodeT::setNextNode(listNodeT* nextNode) {
 
 queueList::queueList(): m_head{ new listNodeT(0, 0) }, m_size{ 0 }
 {
-    m_tail = m_head;
+
 }
 
 queueList::~queueList() {
@@ -170,7 +170,7 @@ void queueList::modify_key()
     }
     currentNode = m_head->nextNode();
 
-    //usuwanie elementu
+
     while (currentNode != nullptr)
     {
         if (currentNode->value() == randValue && currentNode->nextNode()==nullptr)
@@ -257,7 +257,6 @@ void queueList::clear() {
         m_size--;
     }
     m_head->setNextNode(nullptr);
-    m_tail = m_head;
 }
 
 unsigned int queueList::size() const {

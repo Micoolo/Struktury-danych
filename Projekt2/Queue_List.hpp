@@ -27,7 +27,6 @@ public:
 class queueList {
 private:
 	listNodeT* m_head;
-	listNodeT* m_tail;
 	unsigned int m_size;
 
 public:
