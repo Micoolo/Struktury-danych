@@ -8,7 +8,7 @@
 #include <chrono>
 
 //konstruktor
-Tablica::Tablica() : size{0}, capacity{2}, elements{nullptr}
+Tablica::Tablica() : size{0}, capacity{35}, elements{nullptr}
 {
     elements = new int [capacity];
 }

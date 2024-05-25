@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 // #include "../Projekt1/arraylist.h"
 #include "LinkedList.hpp"
@@ -10,23 +11,6 @@ private:
 public:
     HashTable(int nrOfBuckets);
     void print();
+    void set(int key, int value);
+
 };
-
-HashTable::HashTable(int nrOfBuckets) : NumberOfBuckets(nrOfBuckets) 
-{
-    Array = new listNode*[NumberOfBuckets];
-}
-
-void HashTable::print() 
-{
-    for(int i = 0; i < NumberOfBuckets; i++) {
-        std::cout << i << ": " << std::endl;
-        if(Array[i]) {
-            listNode* temp = Array[i];
-            while(temp) {
-                std::cout << "  {" << temp->m_key << ", " << temp->m_value << "}" << std::endl;
-                temp = temp->m_nextNode; 
-            }
-        }
-    }
-}

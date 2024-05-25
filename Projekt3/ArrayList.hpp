@@ -11,7 +11,7 @@ public:
     Tablica();
     ~Tablica();
     void resize();
-    void dodaj_losowo(int element);
+    void dodaj_losowo(int index, int element);
     
     void usun_losowy();
 
