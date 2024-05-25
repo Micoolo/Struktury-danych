@@ -1,4 +1,4 @@
-Projekt2/Build/
-Projekt2/CMakelists.txt
+*/Build/
+*/CMakelists.txt
 *.json
 *.exe
