@@ -1,5 +1,9 @@
 #include <iostream>
 #include <cstring>
+#include <algorithm>
+#include <cstdlib>
+#include <random> 
+#include <chrono>
 #include "HashTable.hpp"
 #include "LinkedList.hpp"
 HashTable::HashTable(int nrOfBuckets) : NumberOfBuckets(nrOfBuckets) 
@@ -43,6 +47,14 @@ int HashTable::hashFunc(unsigned int key)
     return key % NumberOfBuckets;
 }
 
+void HashTable::checkIfResizeNeeded()
+{
+    loadFactor = static_cast<float>(NumberOfElements)/NumberOfBuckets;
+    if (loadFactor >= 0.70) {
+        resize();
+    }
+}
+
 void HashTable::print() 
 {
     for(int i = 0; i < NumberOfBuckets; i++) {
@@ -60,9 +72,9 @@ void HashTable::print()
 
 void HashTable::insert(unsigned int key, int value)
 {
+    checkIfResizeNeeded();
     int index = hashFunc(key);
     listNode* newNode = new listNode(value, key);
-    newNode->m_nextNode = nullptr;
     if (Array[index] == nullptr) {
         Array[index] = newNode;
     } else {
@@ -72,6 +84,7 @@ void HashTable::insert(unsigned int key, int value)
         }
         temp->m_nextNode = newNode;
     }
+    NumberOfElements++;
 }
 
 void HashTable::remove(unsigned int key)
@@ -95,4 +108,69 @@ void HashTable::remove(unsigned int key)
     } else {
         std::cout << "Key not found" << std::endl;
     }
+    NumberOfElements--;
+}
+
+bool HashTable::checkIfKeyExists(int key)
+{
+    int index = hashFunc(key);
+    listNode* temp = Array[index];
+
+    while (temp != nullptr) {
+        if (temp->m_key == key) {
+            return true; 
+        }
+        temp = temp->m_nextNode;
+    }
+
+    return false;
+}
+
+
+int HashTable::randomKey()
+{
+    int randomNumber;
+    do {
+        auto keySeed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+
+        std::mt19937 rp(keySeed);
+        std::uniform_int_distribution<int> rozklad(0, std::numeric_limits<int>::max());
+        randomNumber = rozklad(rp);
+    } while (checkIfKeyExists(randomNumber));
+    return randomNumber;
+}
+
+int HashTable::randomValue()
+{
+    auto valueSeed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+
+    int lowerBoundValue = -2147483648;
+    int upperBoundValue = 2147483647;
+    std::mt19937 rp(valueSeed);
+    std::uniform_int_distribution<int> rozklad(lowerBoundValue, upperBoundValue);
+    int randomNumber = rozklad(rp);
+
+    return randomNumber;
+}
+
+void HashTable::randomHashTable(int number)
+{
+    int valueSeed = 345;
+    int keySeed = 123; // seedy, w ktorych nie powtarzaja sie liczby (123, 158, 1890);
+    
+    
+    int lowerBoundValue = -2147483648;
+    int upperBoundValue = 2147483647;  
+
+    std::mt19937 randVal(valueSeed);
+    std::mt19937 randKey(keySeed);
+    std::uniform_int_distribution<int> distributionValue(lowerBoundValue, upperBoundValue);
+    std::uniform_int_distribution<int> distributionKey(0, std::numeric_limits<int>::max());
+
+    for (int i = 0; i < number; i++) {
+        int randomValue = distributionValue(randVal);
+        int randomKey = distributionKey(randKey);
+        insert(randomKey, randomValue);
+    }
+
 }
