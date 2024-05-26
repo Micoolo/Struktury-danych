@@ -3,14 +3,21 @@
 // #include "../Projekt1/arraylist.h"
 #include "LinkedList.hpp"
 
+
+
 class HashTable {
 private:
-    unsigned int NumberOfBuckets;
-    listNode** Array;
 
 public:
+    int hashFunc(unsigned int key);
+    unsigned int NumberOfBuckets;
+    listNode** Array;
+    void resize();
+
+public:
+
     HashTable(int nrOfBuckets);
     void print();
-    void set(int key, int value);
-
+    void insert(unsigned int key, int value);
+    void remove(unsigned int key);
 };

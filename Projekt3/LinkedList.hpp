@@ -3,12 +3,12 @@
 
 class listNode {
 public:
-    int m_key; 
+    unsigned int m_key; 
 	int m_value;
 	listNode* m_nextNode;
 
 
-	listNode(int value, int key);
+	listNode(int value, unsigned int key);
 
 	~listNode();
 	
