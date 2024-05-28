@@ -55,6 +55,13 @@ void HashTable::checkIfResizeNeeded()
     }
 }
 
+void HashTable::sizeAndLoad()
+{
+    std::cout << "Number of elements: " << NumberOfElements << std::endl;
+    checkIfResizeNeeded();
+    std::cout << "Load Factor: " << loadFactor << std::endl;
+}
+
 void HashTable::print() 
 {
     for(int i = 0; i < NumberOfBuckets; i++) {
@@ -73,6 +80,10 @@ void HashTable::print()
 void HashTable::insert(unsigned int key, int value)
 {
     checkIfResizeNeeded();
+    if (checkIfKeyExists(key)) {
+        std::cout << "Key is already in table. " << std::endl;
+        return;
+    }
     int index = hashFunc(key);
     listNode* newNode = new listNode(value, key);
     if (Array[index] == nullptr) {
@@ -92,9 +103,14 @@ void HashTable::remove(unsigned int key)
     int index = hashFunc(key);
     listNode* prev = Array[index];
     listNode* temp = Array[index];
+    if (temp == nullptr) {
+        std::cout << "Key does not exist" << std::endl;
+        return;
+    }
     if (temp->m_key == key) {
         Array[index] = temp->m_nextNode;
         delete temp;
+        NumberOfElements--;
         return;
     }
 
@@ -126,6 +142,34 @@ bool HashTable::checkIfKeyExists(int key)
     return false;
 }
 
+int HashTable::findKey()
+{
+    if (NumberOfElements == 0) {
+        return -1;
+    }
+    auto seed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+
+    std::mt19937 RN(seed);
+    std::uniform_int_distribution<int> distribution(0, NumberOfBuckets - 1);
+    int randomNumber = distribution(RN);
+
+    for (int i = randomNumber; i < NumberOfBuckets; i++) {
+        listNode* temp = Array[i]; 
+        if (temp != nullptr) {
+            return temp->m_key;
+        }
+        if (i == NumberOfBuckets - 1) {
+            break;
+        }
+    }
+    for (int i = randomNumber - 1; i >= 0; i--) {
+        listNode* temp = Array[i]; 
+        if (temp != nullptr) {
+            return temp->m_key;
+        }        
+    }
+    return -1;
+}
 
 int HashTable::randomKey()
 {
@@ -155,6 +199,9 @@ int HashTable::randomValue()
 
 void HashTable::randomHashTable(int number)
 {
+    if (NumberOfElements != 0) {
+        clear();
+    }
     int valueSeed = 345;
     int keySeed = 123; // seedy, w ktorych nie powtarzaja sie liczby (123, 158, 1890);
     
@@ -173,4 +220,27 @@ void HashTable::randomHashTable(int number)
         insert(randomKey, randomValue);
     }
 
+}
+
+void HashTable::clear() 
+{
+    for (int i = 0; i < NumberOfBuckets; ++i) {
+        listNode* current = Array[i];
+        while (current != nullptr) {
+            listNode* toDelete = current;
+            current = current->m_nextNode;
+            delete toDelete;
+        }
+    }
+    
+    delete[] Array;
+
+    NumberOfBuckets = 75;
+    Array = new listNode*[NumberOfBuckets];
+    for (int i = 0; i < NumberOfBuckets; ++i) {
+        Array[i] = nullptr;
+    }
+
+
+    NumberOfElements = 0;
 }
