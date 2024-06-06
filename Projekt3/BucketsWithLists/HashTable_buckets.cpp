@@ -4,25 +4,26 @@
 #include <cstdlib>
 #include <random> 
 #include <chrono>
-#include "HashTable.hpp"
-#include "LinkedList.hpp"
-HashTable::HashTable(int nrOfBuckets) : NumberOfBuckets(nrOfBuckets) 
+#include "HashTable_buckets.hpp"
+#include "Node.hpp"
+
+HashTableBuckets::HashTableBuckets(int nrOfBuckets) : NumberOfBuckets(nrOfBuckets) 
 {
     Array = new listNode*[NumberOfBuckets];
     for(int i = 0; i< NumberOfBuckets; i++) {
         Array[i] = nullptr;
     }
 }
-void HashTable::resize()
+void HashTableBuckets::resize()
 {
     int oldCapacity = NumberOfBuckets;
     NumberOfBuckets *=2;
-    //stworzenie nowej, tymczasowej tablicy o pojemnosci 2x starej 
+    
     listNode **tempArr = new listNode*[NumberOfBuckets];
     for (int i = 0; i < NumberOfBuckets; i++) {
         tempArr[i] = nullptr;
     }
-    //przekopiowanie elementow z tablicy elements do tymczasowej tablicy (kopiuje elementy po usunietej liczbie i wkleja na jej miejsce)
+    
     for (int i = 0; i < oldCapacity; i ++) {
         listNode* node = Array[i];
         while(node != nullptr) {
@@ -42,12 +43,12 @@ void HashTable::resize()
     Array = tempArr;   
 }
 
-int HashTable::hashFunc(unsigned int key)
+int HashTableBuckets::hashFunc(unsigned int key)
 {
     return key % NumberOfBuckets;
 }
 
-void HashTable::checkIfResizeNeeded()
+void HashTableBuckets::checkIfResizeNeeded()
 {
     loadFactor = static_cast<float>(NumberOfElements)/NumberOfBuckets;
     if (loadFactor >= 0.70) {
@@ -55,14 +56,14 @@ void HashTable::checkIfResizeNeeded()
     }
 }
 
-void HashTable::sizeAndLoad()
+void HashTableBuckets::sizeAndLoad()
 {
     std::cout << "Number of elements: " << NumberOfElements << std::endl;
     checkIfResizeNeeded();
     std::cout << "Load Factor: " << loadFactor << std::endl;
 }
 
-void HashTable::print() 
+void HashTableBuckets::print() 
 {
     for(int i = 0; i < NumberOfBuckets; i++) {
         std::cout << i << ": ";
@@ -77,7 +78,7 @@ void HashTable::print()
     }
 }
 
-void HashTable::insert(unsigned int key, int value)
+void HashTableBuckets::insert(unsigned int key, int value)
 {
     checkIfResizeNeeded();
     if (checkIfKeyExists(key)) {
@@ -98,7 +99,7 @@ void HashTable::insert(unsigned int key, int value)
     NumberOfElements++;
 }
 
-void HashTable::remove(unsigned int key)
+void HashTableBuckets::remove(unsigned int key)
 {
     int index = hashFunc(key);
     listNode* prev = Array[index];
@@ -127,7 +128,7 @@ void HashTable::remove(unsigned int key)
     NumberOfElements--;
 }
 
-bool HashTable::checkIfKeyExists(int key)
+bool HashTableBuckets::checkIfKeyExists(int key)
 {
     int index = hashFunc(key);
     listNode* temp = Array[index];
@@ -142,7 +143,7 @@ bool HashTable::checkIfKeyExists(int key)
     return false;
 }
 
-int HashTable::findKey()
+int HashTableBuckets::findKey()
 {
     if (NumberOfElements == 0) {
         return -1;
@@ -171,7 +172,7 @@ int HashTable::findKey()
     return -1;
 }
 
-int HashTable::randomKey()
+int HashTableBuckets::randomKey()
 {
     int randomNumber;
     do {
@@ -184,7 +185,7 @@ int HashTable::randomKey()
     return randomNumber;
 }
 
-int HashTable::randomValue()
+int HashTableBuckets::randomValue()
 {
     auto valueSeed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
 
@@ -197,7 +198,7 @@ int HashTable::randomValue()
     return randomNumber;
 }
 
-void HashTable::randomHashTable(int number)
+void HashTableBuckets::randomHashTable(int number)
 {
     if (NumberOfElements != 0) {
         clear();
@@ -222,7 +223,7 @@ void HashTable::randomHashTable(int number)
 
 }
 
-void HashTable::clear() 
+void HashTableBuckets::clear() 
 {
     for (int i = 0; i < NumberOfBuckets; ++i) {
         listNode* current = Array[i];

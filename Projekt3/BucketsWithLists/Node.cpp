@@ -1,5 +1,5 @@
 #include <iostream>
-#include "LinkedList.hpp"
+#include "Node.hpp"
 
 listNode::listNode(int value, unsigned int key) : m_value{ value }, m_key { key }, m_nextNode{ nullptr } 
 {

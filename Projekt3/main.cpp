@@ -1,9 +1,10 @@
 #include <iostream>
-#include "HashTable.hpp"
+#include "BucketsWithLists/HashTable_buckets.hpp"
 #include <chrono>
+#include "Cuckoo/HashTable_cuckoo.hpp"
 
 void HashTable_menu() {
-    HashTable Table(75);
+    HashTableBuckets Table(75);
     bool exit = false;
     do {
         std::cout << std::endl << "-------HASHTABLE BUCKETS WITH LIST-------" << std::endl;
@@ -75,37 +76,23 @@ void HashTable_menu() {
 
 
 int main () {
-    HashTable_menu();
-    // std::cout << std::endl << std::endl;
-    // Table.insert(352, 69);
-    // Table.insert(21, 11);
-    // Table.insert(45, 22);
-    // Table.insert(323, 33);
-    // Table.insert(41, 44);
-    // Table.print();
-    // // Table.remove(21);
-    // Table.insert(31, 44);
-    // Table.insert(11, 44);
-    // // Table.remove(11);
-    // Table.insert(71, 44);
-    // // Table.remove(71);
-    // Table.insert(81,44);
-    // // Table.remove(81);
-    // // Table.insert(91,44);
-    // // Table.resize();
-    // Table.checkIfResizeNeeded();
-    // std::cout << std::endl;
-    // Table.print();
-    // int tab[10];
-    // for (int i = 0; i < 10; i ++) {
-    //     tab[i] = Table.randomKey();
-    // }
-    // for (int i = 0; i < 10; i ++) {
-    //     std::cout << tab[i] << std::endl;
-    // }    
-    // Table.randomHashTable(12);
-    // Table.insert(Table.randomKey(), Table.randomValue());
-    // Table.print();
-    // std::cout << Table.NumberOfBuckets; 
+    // HashTable_menu();
+    HashTableCuckoo table;
+    table.insert(1, 121);
+    table.insert(11, 122);
+    table.insert(21, 123);
+    table.insert(2, 124);
+    table.print();
+    std::cout << std::endl << std::endl;
+    table.insert(22, 125);
+    table.insert(12, 126);
+    table.insert(44, 127);
+    table.insert(457123, 128);
+    table.insert(52, 127);
+    table.insert(1236, 128);
+    table.print();
+    table.sizeAndLoad();
+    // table.print();
+    // table.sizeAndLoad();
     return 0;
 }

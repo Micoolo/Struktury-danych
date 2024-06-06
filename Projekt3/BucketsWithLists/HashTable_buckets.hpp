@@ -1,11 +1,10 @@
 #pragma once
 #include <iostream>
-// #include "../Projekt1/arraylist.h"
-#include "LinkedList.hpp"
+#include "Node.hpp"
 
 
 
-class HashTable {
+class HashTableBuckets {
 private:
     listNode** Array;
     int hashFunc(unsigned int key);
@@ -18,7 +17,7 @@ private:
     void clear();
     
 public:
-    HashTable(int nrOfBuckets);
+    HashTableBuckets(int nrOfBuckets);
     void print();
     void insert(unsigned int key, int value);
     void remove(unsigned int key);
