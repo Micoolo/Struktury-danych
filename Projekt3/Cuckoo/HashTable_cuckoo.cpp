@@ -126,3 +126,25 @@ void HashTableCuckoo::print()
         
     }
 }
+
+bool HashTableCuckoo::checkIfKeyExists(unsigned int key)
+{
+    int index = hashFunc1(key);
+    if (table1[index].m_key == key) 
+        return true;
+    index = hashFunc2(key);
+    if (table2[index].m_key == key)
+        return true;
+    return false;
+}
+
+void HashTableCuckoo::remove(unsigned int key) 
+{
+    int index = hashFunc1(key);
+    if (table1[index].m_key == key) 
+        table1[index] = emptyElement;
+    index = hashFunc2(key);
+    if (table2[index].m_key == key)
+        table2[index] = emptyElement;
+}
+
