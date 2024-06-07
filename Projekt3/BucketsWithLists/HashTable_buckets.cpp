@@ -7,7 +7,7 @@
 #include "HashTable_buckets.hpp"
 #include "Node.hpp"
 
-HashTableBuckets::HashTableBuckets(int nrOfBuckets) : NumberOfBuckets(nrOfBuckets) 
+HashTableBuckets::HashTableBuckets() : NumberOfBuckets(75) 
 {
     Array = new listNode*[NumberOfBuckets];
     for(int i = 0; i< NumberOfBuckets; i++) {

@@ -1,7 +1,11 @@
 #include <iostream>
 #include "HashTable_cuckoo.hpp"
+#include <random>
+#include <chrono>
+#include <string>
+#include <utility>
 
-HashTableCuckoo::HashTableCuckoo() : size(0), capacity(5)
+HashTableCuckoo::HashTableCuckoo() : size(0), capacity(75)
 {
     table1 = new Element[capacity];
     table2 = new Element[capacity];
@@ -37,8 +41,10 @@ void HashTableCuckoo::rehash(bool resized)
     size = 0;
     if (!resized) {
         hashNumber++;
+        rehashCount++;
     } else if (resized) {
         hashNumber = 1;
+        rehashCount = 0;
     }
 
     for (int i = 0; i < oldCapacity; ++i) {
@@ -54,16 +60,20 @@ void HashTableCuckoo::rehash(bool resized)
     delete[] oldTable2;
 }
 
-
 int HashTableCuckoo::hashFunc1(unsigned int key)
 {
-    return (key/hashNumber) % capacity;
+    int k = 7;
+    k = ((11 * key) / hashNumber) % capacity;
+    return k;
 }
 
 int HashTableCuckoo::hashFunc2(unsigned int key)
 {
-    return ((((key - 1) * 2) / 3) / hashNumber) % capacity;
+    int k = 7;
+    k = ((5 * key) / hashNumber) % capacity;
+    return k;
 }
+
 
 void HashTableCuckoo::insert(unsigned int key, int value) 
 {
@@ -92,12 +102,20 @@ void HashTableCuckoo::insert(unsigned int key, int value)
         std::swap(newElement, table2[index]);
         index = hashFunc1(newElement.m_key);
     }
-    rehash(false);
-    insert(key, value);
+
+    if (rehashCount > 10) {
+        std::cout << "resized: " << capacity << std::endl;
+        rehash(true);    
+    } else {
+        std::cout << "REHASH COUNT: " << rehashCount << std::endl;
+        rehash(false);
+    }
+    insert(newElement.m_key, newElement.m_value);
 } 
 
 void HashTableCuckoo::sizeAndLoad()
 {
+    checkIfResizeNeeded();
     std::cout << "Number of elements: " << size << std::endl;
     std::cout << "Capacity: " << capacity * 2 << std::endl;
     std::cout << "Load Factor: " << loadFactor << std::endl;
@@ -146,5 +164,113 @@ void HashTableCuckoo::remove(unsigned int key)
     index = hashFunc2(key);
     if (table2[index].m_key == key)
         table2[index] = emptyElement;
+    size--;
 }
 
+void HashTableCuckoo::clear()
+{
+    delete[] table1;
+    delete[] table2;
+    
+    capacity = 75;
+    size = 0;
+    loadFactor = 0;
+    hashNumber = 1;
+
+    table1 = new Element[capacity];
+    table2 = new Element[capacity];
+    for (int i = 0; i < capacity; i++) {
+        table1[i] = emptyElement;
+        table2[i] = emptyElement;
+    }
+}
+
+int HashTableCuckoo::randomKey()
+{
+    int randomNumber;
+    do {
+        auto keySeed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+
+        std::mt19937 rp(keySeed);
+        std::uniform_int_distribution<int> rozklad(0, std::numeric_limits<int>::max());
+        randomNumber = rozklad(rp);
+    } while (checkIfKeyExists(randomNumber));
+    return randomNumber;
+}
+
+int HashTableCuckoo::randomValue()
+{
+    auto valueSeed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+
+    int lowerBoundValue = -2147483648;
+    int upperBoundValue = 2147483647;
+    std::mt19937 rp(valueSeed);
+    std::uniform_int_distribution<int> rozklad(lowerBoundValue, upperBoundValue);
+    int randomNumber = rozklad(rp);
+
+    return randomNumber;
+}
+
+int HashTableCuckoo::findKey()
+{
+    if (size == 0) {
+        return -1;
+    }
+    auto seed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+
+    std::mt19937 RN(seed);
+    std::uniform_int_distribution<int> tableDist(1, 2);
+    std::uniform_int_distribution<int> distribution(0, capacity - 1);
+    int tableNumber = tableDist(RN);
+    int randomNumber = distribution(RN);
+
+    if (tableNumber == 2) {
+        for (int i = randomNumber; i < capacity; i++) {
+            if (table2[i].m_key != emptyElement.m_key) {
+                return table2[i].m_key;
+            }
+        }
+        for (int i = randomNumber - 1; i >= 0; i--) {
+            if (table2[i].m_key != emptyElement.m_key) {
+                return table2[i].m_key;
+            }
+        }
+    }  
+
+    for (int i = randomNumber; i < capacity; i++) {
+        if (table1[i].m_key != emptyElement.m_key) {
+            return table1[i].m_key;
+        }
+    }
+    for (int i = randomNumber - 1; i >= 0; i--) {
+        if (table1[i].m_key != emptyElement.m_key) {
+            return table1[i].m_key;
+        }
+    }  
+
+    return -1;
+}
+
+void HashTableCuckoo::randomHashTable(int number)
+{
+    if (size != 0) {
+        clear();
+    }
+    int valueSeed = 345;
+    int keySeed = 123; // seedy, w ktorych nie powtarzaja sie liczby (123, 158, 1890);
+    
+    
+    int lowerBoundValue = -2147483648;
+    int upperBoundValue = 2147483647;  
+
+    std::mt19937 randVal(valueSeed);
+    std::mt19937 randKey(keySeed);
+    std::uniform_int_distribution<int> distributionValue(lowerBoundValue, upperBoundValue);
+    std::uniform_int_distribution<int> distributionKey(0, 1000000000);
+
+    for (int i = 0; i < number; i++) {
+        int randomValue = distributionValue(randVal);
+        int randomKey = distributionKey(randKey);
+        insert(randomKey, randomValue);
+    }
+}

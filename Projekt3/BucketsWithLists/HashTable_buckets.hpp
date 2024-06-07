@@ -17,7 +17,7 @@ private:
     void clear();
     
 public:
-    HashTableBuckets(int nrOfBuckets);
+    HashTableBuckets();
     void print();
     void insert(unsigned int key, int value);
     void remove(unsigned int key);
