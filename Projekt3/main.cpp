@@ -2,6 +2,7 @@
 #include "BucketsWithLists/HashTable_buckets.hpp"
 #include <chrono>
 #include "Cuckoo/HashTable_cuckoo.hpp"
+#include <chrono>
 
 void HashTableBuckets_menu() {
     HashTableBuckets Table;
@@ -31,28 +32,66 @@ void HashTableBuckets_menu() {
                 std::cout << "Enter key and value: ";
                 int key, value; 
                 std::cin >> key >> value;
+                auto start = std::chrono::high_resolution_clock::now();
+
                 Table.insert(key, value);
+
+                auto end = std::chrono::high_resolution_clock::now();
+                double time_taken = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
+                time_taken *= 1e-9;
+                std::cout << "Operacja zajela: " << time_taken << " sekundy." << std::endl;                
                 break;
             }
             case 3: {
-                int key = Table.randomKey();
-                int value = Table.randomValue();
-                Table.insert(key, value);
+                double avarage_time = 0;
+                for(int i = 0; i < 10; i++)
+                {
+                    int key = Table.randomKey();
+                    int value = Table.randomValue();
+                    auto start = std::chrono::high_resolution_clock::now();
+                    
+                    Table.insert(key, value);
+                    
+                    auto end = std::chrono::high_resolution_clock::now();
+                    double time_taken = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
+                    time_taken *= 1e-9;
+                    avarage_time += time_taken;
+                }
+                std::cout << "Operacja zajela: " << avarage_time / 10 << " sekundy." << std::endl;
                 break;
             }
             case 4: {
                 int key; 
                 std::cin >> key;
+                auto start = std::chrono::high_resolution_clock::now();
+
                 Table.remove(key);
+
+                auto end = std::chrono::high_resolution_clock::now();
+                double time_taken = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
+                time_taken *= 1e-9;
+                std::cout << "Operacja zajela: " << time_taken << " sekundy." << std::endl;
                 break;
             }
             case 5: {
-                int key = Table.findKey();
-                if (key == -1) {
-                    std::cout << "Table is empty" << std::endl;
-                    break;
+                double avarage_time = 0;
+                for(int i = 0; i < 10; i++)
+                {
+                    int key = Table.findKey();
+                    if (key == -1) {
+                        std::cout << "Table is empty" << std::endl;
+                        break;
+                    }   
+                    auto start = std::chrono::high_resolution_clock::now();
+                    
+                    Table.remove(key);
+                    
+                    auto end = std::chrono::high_resolution_clock::now();
+                    double time_taken = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
+                    time_taken *= 1e-9;
+                    avarage_time += time_taken;
                 }
-                Table.remove(key);
+                std::cout << "Operacja zajela: " << avarage_time / 10 << " sekundy." << std::endl;
                 break;
             }
             case 6: {
@@ -95,35 +134,80 @@ void HashTableCuckoo_menu() {
                 std::cout << "How many numbers to generate? ";
                 int number; 
                 std::cin >> number; 
+                auto start = std::chrono::high_resolution_clock::now();
+
                 Table.randomHashTable(number);
+                
+                auto end = std::chrono::high_resolution_clock::now();
+                double time_taken = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
+                time_taken *= 1e-9;
+                std::cout << "Operacja zajela: " << time_taken << " sekundy." << std::endl;                
                 break;
             }
             case 2: {
                 std::cout << "Enter key and value: ";
                 int key, value; 
                 std::cin >> key >> value;
+                auto start = std::chrono::high_resolution_clock::now();
+
                 Table.insert(key, value);
+
+                auto end = std::chrono::high_resolution_clock::now();
+                double time_taken = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
+                time_taken *= 1e-9;
+                std::cout << "Operacja zajela: " << time_taken << " sekundy." << std::endl;
                 break;
             }
             case 3: {
-                int key = Table.randomKey();
-                int value = Table.randomValue();
-                Table.insert(key, value);
+                double avarage_time = 0;
+                for(int i = 0; i < 10; i++)
+                {
+                    int key = Table.randomKey();
+                    int value = Table.randomValue();
+                    auto start = std::chrono::high_resolution_clock::now();
+                    
+                    Table.insert(key, value);
+                    
+                    auto end = std::chrono::high_resolution_clock::now();
+                    double time_taken = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
+                    time_taken *= 1e-9;
+                    avarage_time += time_taken;
+                }
+                std::cout << "Operacja zajela: " << avarage_time / 10 << " sekundy." << std::endl;
                 break;
             }
             case 4: {
                 int key; 
                 std::cin >> key;
+                auto start = std::chrono::high_resolution_clock::now();
+
                 Table.remove(key);
+
+                auto end = std::chrono::high_resolution_clock::now();
+                double time_taken = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
+                time_taken *= 1e-9;
+                std::cout << "Operacja zajela: " << time_taken << " sekundy." << std::endl;
                 break;
             }
             case 5: {
-                int key = Table.findKey();
-                if (key == -1) {
-                    std::cout << "Table is empty" << std::endl;
-                    break;
+                double avarage_time = 0;
+                for(int i = 0; i < 10; i++)
+                {
+                    int key = Table.findKey();
+                    if (key == -1) {
+                        std::cout << "Table is empty" << std::endl;
+                        break;
+                    }   
+                    auto start = std::chrono::high_resolution_clock::now();
+                    
+                    Table.remove(key);
+                    
+                    auto end = std::chrono::high_resolution_clock::now();
+                    double time_taken = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
+                    time_taken *= 1e-9;
+                    avarage_time += time_taken;
                 }
-                Table.remove(key);
+                std::cout << "Operacja zajela: " << avarage_time / 10 << " sekundy." << std::endl;
                 break;
             }
             case 6: {
@@ -152,23 +236,5 @@ void HashTableCuckoo_menu() {
 
 int main () {
     HashTableCuckoo_menu();
-    // HashTable_menu();
-    // HashTableCuckoo table;
-    // table.insert(1, 121);
-    // table.insert(11, 122);
-    // table.insert(21, 123);
-    // table.insert(2, 124);
-    // table.print();
-    // std::cout << std::endl << std::endl;
-    // table.insert(22, 125);
-    // table.insert(12, 126);
-    // table.insert(44, 127);
-    // table.insert(457123, 128);
-    // table.insert(52, 127);
-    // table.insert(1236, 128);
-    // table.print();
-    // table.sizeAndLoad();
-    // table.print();
-    // table.sizeAndLoad();
     return 0;
 }

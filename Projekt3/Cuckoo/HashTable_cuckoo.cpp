@@ -104,10 +104,8 @@ void HashTableCuckoo::insert(unsigned int key, int value)
     }
 
     if (rehashCount > 10) {
-        std::cout << "resized: " << capacity << std::endl;
         rehash(true);    
     } else {
-        std::cout << "REHASH COUNT: " << rehashCount << std::endl;
         rehash(false);
     }
     insert(newElement.m_key, newElement.m_value);
@@ -266,7 +264,7 @@ void HashTableCuckoo::randomHashTable(int number)
     std::mt19937 randVal(valueSeed);
     std::mt19937 randKey(keySeed);
     std::uniform_int_distribution<int> distributionValue(lowerBoundValue, upperBoundValue);
-    std::uniform_int_distribution<int> distributionKey(0, 1000000000);
+    std::uniform_int_distribution<int> distributionKey(0, std::numeric_limits<int>::max());
 
     for (int i = 0; i < number; i++) {
         int randomValue = distributionValue(randVal);
