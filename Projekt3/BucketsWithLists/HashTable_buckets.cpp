@@ -204,7 +204,7 @@ void HashTableBuckets::randomHashTable(int number)
         clear();
     }
     int valueSeed = 345;
-    int keySeed = 123; // seedy, w ktorych nie powtarzaja sie liczby (123, 158, 1890);
+    int keySeed = 158; // seedy, w ktorych nie powtarzaja sie liczby (123, 158, 1890);
     
     
     int lowerBoundValue = -2147483648;

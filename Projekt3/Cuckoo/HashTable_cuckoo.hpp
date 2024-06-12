@@ -18,21 +18,22 @@ private:
     int capacity;
     float loadFactor = 0; 
     int hashNumber = 1;  
-    void checkIfResizeNeeded(); //DOME
-    bool checkIfKeyExists(unsigned int key); //DONE
-    void clear(); //DONE
-    int hashFunc1(unsigned int key); //DONE
-    int hashFunc2(unsigned int key); //DONE
+    void checkIfResizeNeeded();
+    bool checkIfKeyExists(unsigned int key);
+    void clear();
+    int hashFunc1(unsigned int key);
+    int hashFunc2(unsigned int key);
+    void rehash(bool resized);
+    
 public:
-    void rehash(bool resized);  //DONE
-    HashTableCuckoo(); //DONE
-    ~HashTableCuckoo(); //DONE
-    void print(); //DONE
-    void insert(unsigned int key, int value); //DONE
-    void remove(unsigned int key); //DONE
-    int randomKey(); //DONE
-    int randomValue(); //DONE
-    void randomHashTable(int number); //DONE
-    void sizeAndLoad(); //DONE
-    int findKey(); //DONE
+    HashTableCuckoo();
+    ~HashTableCuckoo();
+    void print();
+    void insert(unsigned int key, int value);
+    void remove(unsigned int key);
+    int randomKey();
+    int randomValue();
+    void randomHashTable(int number);
+    void sizeAndLoad();
+    int findKey();
 };
